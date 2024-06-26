@@ -11,6 +11,14 @@
             margin: 0 auto;
             padding: 20px;
         }
+        #description {
+            background-color: #f0f0f0;
+            border-left: 4px solid #3498db;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
         form {
             display: flex;
             flex-direction: column;
@@ -28,43 +36,90 @@
             display: none;
         }
 
-     .idea {
-        margin-bottom: 20px;
-        line-height: 1.6;
-    }
-    .idea-number {
-        font-weight: bold;
-        margin-right: 5px;
-    }
-    .product {
-        font-weight: bold;
-    }
-    .pricing {
-        margin-top: 8px;
-        font-style: italic;
-        color: #666;
-    }
+         .idea {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .idea-number {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .product {
+            font-weight: bold;
+        }
+        .pricing {
+            margin-top: 8px;
+            font-style: italic;
+            color: #666;
+        }
+            
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #loadingIndicator {
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <h1>Quiet Canyon Kids</h1>
     <h2>Entrepreneurial Event Ideas Generator</h2>
+    <p id="description">
+    Enter your child's age and interests below. You'll receive 10 creative entrepreneurial product ideas tailored to your child's age and interests. Each idea will include a brief description and suggested pricing for a neighborhood event.
+    </p>
     <form id="ideaForm">
         <label for="age">Child's Age:</label>
-        <input type="number" id="age" name="age" required min="1" max="18">
+        <select id="age" name="age" required>
+            <option value="">Select age</option>
+            <option value="4">4 years old</option>
+            <option value="5">5 years old</option>
+            <option value="6">6 years old</option>
+            <option value="7">7 years old</option>
+            <option value="8">8 years old</option>
+            <option value="9">9 years old</option>
+            <option value="10">10 years old</option>
+            <option value="11">11 years old</option>
+            <option value="12">12 years old</option>
+            <option value="13">13 years old</option>
+            <option value="14">14 years old</option>
+            <option value="15">15 years old</option>
+            <option value="16">16 years old</option>
+            <option value="17">17 years old</option>
+        </select>
         
         <label for="interests">Child's Interests (comma-separated):</label>
         <textarea id="interests" name="interests" required></textarea>
         
         <button type="submit">Generate Ideas</button>
     </form>
+    
+    <div id="loadingIndicator" style="display: none;">
+        <div class="spinner"></div>
+        <p>Generating ideas...</p>
+    </div>
+    
     <div id="ideas"></div>
     <button id="refreshButton">Generate More Ideas</button>
     <script>
         const form = document.getElementById('ideaForm');
         const ideasDiv = document.getElementById('ideas');
         const refreshButton = document.getElementById('refreshButton');
-
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const submitButton = document.querySelector('button[type="submit"]');
+    
         async function generateIdeas(age, interests) {
             try {
                 const response = await fetch('/api/generate-ideas', {
@@ -74,18 +129,16 @@
                     },
                     body: JSON.stringify({ age, interests }),
                 });
-
                 if (!response.ok) {
                     throw new Error('Failed to generate ideas');
                 }
-
                 return response.json();
             } catch (error) {
                 console.error('Error:', error);
                 throw error;
             }
         }
-
+    
         function displayIdeas(ideas) {
             ideasDiv.innerHTML = '<h2>Entrepreneurial Ideas:</h2>' +
                 ideas.map((idea, index) => {
@@ -94,26 +147,36 @@
                         <div class="idea">
                             <span class="idea-number">${index + 1}.</span>
                             <span class="product">${product}</span>
-                            <br> <!-- Add this line break -->
+                            <br>
                             <div class="pricing">${pricing}</div>
                         </div>`;
                 }).join('');
             refreshButton.style.display = 'block';
         }
+    
         async function handleIdeaGeneration(e) {
             if (e) e.preventDefault();
             const age = document.getElementById('age').value;
             const interests = document.getElementById('interests').value;
-
+    
+            // Show loading indicator and disable button
+            loadingIndicator.style.display = 'block';
+            submitButton.disabled = true;
+            ideasDiv.innerHTML = '';
+    
             try {
                 const ideas = await generateIdeas(age, interests);
                 displayIdeas(ideas);
             } catch (error) {
                 console.error('Error:', error);
                 ideasDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+            } finally {
+                // Hide loading indicator and enable button
+                loadingIndicator.style.display = 'none';
+                submitButton.disabled = false;
             }
         }
-
+    
         form.addEventListener('submit', handleIdeaGeneration);
         refreshButton.addEventListener('click', handleIdeaGeneration);
     </script>
