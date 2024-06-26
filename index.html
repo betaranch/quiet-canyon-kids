@@ -78,7 +78,7 @@
     <h1>Quiet Canyon Kids</h1>
     <h2>Entrepreneurial Event Ideas Generator</h2>
     <p id="description">
-    Enter your child's age and interests below. You'll receive 10 creative entrepreneurial product ideas tailored to your child's age and interests. Each idea will include a brief description and suggested pricing for a neighborhood event.
+    Enter your child's age and interests below. You'll receive 10 product ideas tailored to your child's age and interests. Each idea will include an estimated cost per unit and ercommended selling price for the event.
     </p>
     <form id="ideaForm">
         <label for="age">Child's Age:</label>
@@ -140,7 +140,7 @@
         }
     
         function displayIdeas(ideas) {
-            ideasDiv.innerHTML = '<h2>Entrepreneurial Ideas:</h2>' +
+            ideasDiv.innerHTML = '<h2>Product Ideas:</h2>' +
                 ideas.map((idea, index) => {
                     const [product, pricing] = idea.split(/(?<=\.) /);
                     return `
