@@ -24,13 +24,21 @@
             margin-top: 20px;
         }
         .idea {
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         line-height: 1.4;
-    }
-    .idea-number {
-        font-weight: bold;
-        margin-right: 5px;
-    }
+        }
+        .idea-number {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .product {
+            font-weight: bold;
+        }
+        .pricing {
+            margin-top: 5px;
+            font-style: italic;
+            color: #666;
+        }
         #refreshButton {
             display: none;
         }
@@ -76,17 +84,18 @@
         }
 
         function displayIdeas(ideas) {
-    const cleanIdeas = ideas.map((idea, index) => {
-        // Remove numbers, asterisks, and extra spaces
-        return idea.replace(/^\d+\.\s*\*+|\*+/g, '').trim();
-    });
-
-    ideasDiv.innerHTML = '<h2>Entrepreneurial Ideas:</h2>' +
-        cleanIdeas.map((idea, index) => 
-            `<div class="idea"><span class="idea-number">${index + 1}.</span> ${idea}</div>`
-        ).join('');
-    refreshButton.style.display = 'block';
-}
+        ideasDiv.innerHTML = '<h2>Entrepreneurial Ideas:</h2>' +
+            ideas.map((idea, index) => {
+                const [product, pricing] = idea.split(/(?<=\.) /);
+                return `
+                    <div class="idea">
+                        <span class="idea-number">${index + 1}.</span>
+                        <span class="product">${product}</span>
+                        <div class="pricing">${pricing}</div>
+                    </div>`;
+            }).join('');
+        refreshButton.style.display = 'block';
+        }
 
         async function handleIdeaGeneration(e) {
             if (e) e.preventDefault();
