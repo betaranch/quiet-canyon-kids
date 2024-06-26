@@ -68,7 +68,7 @@
         }
 
         function displayIdeas(ideas) {
-            ideasDiv.innerHTML = '<h2>Entrepreneurial Ideas:</h2><ol>' +
+            ideasDiv.innerHTML = '<h2>Entrepreneurial Ideas:</h2><ul>' +
                 ideas.map(idea => `<li>${idea}</li>`).join('') +
                 '</ul>';
             refreshButton.style.display = 'block';
