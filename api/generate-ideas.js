@@ -12,8 +12,8 @@ module.exports = async (req, res) => {
         content: "You are a helpful assistant that generates entrepreneurial ideas for children."
       }, {
         role: "user",
-        content: `Families are showing up to a neighborhood entreprenurial event with 10 other families and are looking for a fun and creative product they can sell to the neighbors that attend the event. All are to be sold between $1 - $5 dollars using single bills. Value of the products sold can slightly surpass sell price but hopefully not by much. Examples of items being sold by other families are bracelets, beach bags, lemonade, cookies. Generate 10 creative entrepreneurial product ideas that a ${age}-year-old child interested in ${interests} would enjoy creating and selling for the event. Provide each idea as a short sentence without numbering or special characters. Have a second sentence with an estimated cost per unit and a recommended sale price to make things easier on the parent.`
-      }],
+   content: `Families are attending a neighborhood entrepreneurial event with 10 other families and are looking for fun and creative products their children can sell to neighbors. Each product should be unique, handmade, and suitable for children to make and sell, with a price range of $1 - $5 using single bills. The value of the products sold can slightly surpass the selling price but should remain affordable. Examples of items sold by other families include handmade bracelets, beach bags, lemonade, and cookies. Generate 10 creative entrepreneurial product ideas that a ${age}-year-old child interested in ${interests} would enjoy creating and selling at the event. Each idea should be a short sentence without numbering or special characters, followed by a second sentence with an estimated cost per unit and a recommended sale price to assist parents. Ensure the ideas are age-appropriate, engaging, and something the child would be proud to make and sell.`
+    }],
       temperature: 0.7
     }, {
       headers: {
