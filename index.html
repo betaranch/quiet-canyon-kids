@@ -23,25 +23,27 @@
         #ideas {
             margin-top: 20px;
         }
-        .idea {
-        margin-bottom: 20px;
-        line-height: 1.4;
-        }
-        .idea-number {
-            font-weight: bold;
-            margin-right: 5px;
-        }
-        .product {
-            font-weight: bold;
-        }
-        .pricing {
-            margin-top: 5px;
-            font-style: italic;
-            color: #666;
-        }
+
         #refreshButton {
             display: none;
         }
+
+     .idea {
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+    .idea-number {
+        font-weight: bold;
+        margin-right: 5px;
+    }
+    .product {
+        font-weight: bold;
+    }
+    .pricing {
+        margin-top: 8px;
+        font-style: italic;
+        color: #666;
+    }
     </style>
 </head>
 <body>
@@ -84,19 +86,19 @@
         }
 
         function displayIdeas(ideas) {
-        ideasDiv.innerHTML = '<h2>Entrepreneurial Ideas:</h2>' +
-            ideas.map((idea, index) => {
-                const [product, pricing] = idea.split(/(?<=\.) /);
-                return `
-                    <div class="idea">
-                        <span class="idea-number">${index + 1}.</span>
-                        <span class="product">${product}</span>
-                        <div class="pricing">${pricing}</div>
-                    </div>`;
-            }).join('');
-        refreshButton.style.display = 'block';
+            ideasDiv.innerHTML = '<h2>Entrepreneurial Ideas:</h2>' +
+                ideas.map((idea, index) => {
+                    const [product, pricing] = idea.split(/(?<=\.) /);
+                    return `
+                        <div class="idea">
+                            <span class="idea-number">${index + 1}.</span>
+                            <span class="product">${product}</span>
+                            <br> <!-- Add this line break -->
+                            <div class="pricing">${pricing}</div>
+                        </div>`;
+                }).join('');
+            refreshButton.style.display = 'block';
         }
-
         async function handleIdeaGeneration(e) {
             if (e) e.preventDefault();
             const age = document.getElementById('age').value;
