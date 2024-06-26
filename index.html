@@ -39,29 +39,32 @@
         
         <button type="submit">Generate Ideas</button>
     </form>
-
     <div id="ideas"></div>
     <button id="refreshButton">Generate More Ideas</button>
-
     <script>
         const form = document.getElementById('ideaForm');
         const ideasDiv = document.getElementById('ideas');
         const refreshButton = document.getElementById('refreshButton');
 
         async function generateIdeas(age, interests) {
-            const response = await fetch('/generate-ideas', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ age, interests }),
-            });
+            try {
+                const response = await fetch('/api/generate-ideas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ age, interests }),
+                });
 
-            if (!response.ok) {
-                throw new Error('Failed to generate ideas');
+                if (!response.ok) {
+                    throw new Error('Failed to generate ideas');
+                }
+
+                return response.json();
+            } catch (error) {
+                console.error('Error:', error);
+                throw error;
             }
-
-            return response.json();
         }
 
         function displayIdeas(ideas) {
@@ -71,8 +74,8 @@
             refreshButton.style.display = 'block';
         }
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        async function handleIdeaGeneration(e) {
+            if (e) e.preventDefault();
             const age = document.getElementById('age').value;
             const interests = document.getElementById('interests').value;
 
@@ -80,21 +83,13 @@
                 const ideas = await generateIdeas(age, interests);
                 displayIdeas(ideas);
             } catch (error) {
+                console.error('Error:', error);
                 ideasDiv.innerHTML = `<p>Error: ${error.message}</p>`;
             }
-        });
+        }
 
-        refreshButton.addEventListener('click', async () => {
-            const age = document.getElementById('age').value;
-            const interests = document.getElementById('interests').value;
-
-            try {
-                const ideas = await generateIdeas(age, interests);
-                displayIdeas(ideas);
-            } catch (error) {
-                ideasDiv.innerHTML = `<p>Error: ${error.message}</p>`;
-            }
-        });
+        form.addEventListener('submit', handleIdeaGeneration);
+        refreshButton.addEventListener('click', handleIdeaGeneration);
     </script>
 </body>
 </html>
