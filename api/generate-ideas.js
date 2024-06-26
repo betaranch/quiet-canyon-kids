@@ -2,7 +2,7 @@ const axios = require('axios');
 
 module.exports = async (req, res) => {
   const { age, interests } = req.body;
-  const OPENAI_API_KEY = process.env.key;
+  const OPENAI_API_KEY = process.env.KEY;
 
   try {
     const response = await axios.post('https://api.openai.com/v1/chat/completions', {
