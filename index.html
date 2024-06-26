@@ -70,7 +70,7 @@
         function displayIdeas(ideas) {
             ideasDiv.innerHTML = '<h2>Entrepreneurial Ideas:</h2><ol>' +
                 ideas.map(idea => `<li>${idea}</li>`).join('') +
-                '</ol>';
+                '</ul>';
             refreshButton.style.display = 'block';
         }
 
